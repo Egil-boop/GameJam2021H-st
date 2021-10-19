@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     bool isGrounded = true;
 
 
-    private float cooldownTime = 1.5f;
+    [SerializeField]private float cooldownTime = 1.5f;
     private float nextDashTime = 0;
 
 
