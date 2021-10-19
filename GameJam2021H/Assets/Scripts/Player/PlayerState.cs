@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerState : MonoBehaviour
 {
     public DamagePopUp damagePopUp;
+    public Text healthUI;
 
     public Color playerColor;
     public int startHealth = 1000;
@@ -13,10 +15,13 @@ public class PlayerState : MonoBehaviour
     private void Start()
     {
         currentHealth = startHealth;
+        healthUI.color = playerColor;
+        healthUI.text = "$" + startHealth;
     }
 
     private void Update()
     {
+        //for dev use /August
         if (Input.GetKeyDown(KeyCode.G))
         {
             TakeDamage(10);
@@ -27,5 +32,6 @@ public class PlayerState : MonoBehaviour
     {
         currentHealth -= damage;
         damagePopUp.Pop(damage);
+        healthUI.text = "$" + currentHealth;
     }
 }
