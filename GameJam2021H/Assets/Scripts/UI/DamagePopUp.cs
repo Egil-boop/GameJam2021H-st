@@ -68,8 +68,10 @@ public class DamagePopUp : MonoBehaviour
 			Debug.Log("Damage Pop Ups are being recycled");
         }
 
+		Vector3 position = Camera.main.WorldToScreenPoint(state.gameObject.transform.position) + new Vector3(Random.Range(-50, 50), 0, 0);
+
 		textToPop.enabled = true;
-		textToPop.gameObject.transform.position = Camera.main.WorldToScreenPoint(state.gameObject.transform.position);
+		textToPop.gameObject.transform.position = position;
 		textToPop.color = state.playerColor;
 		textToPop.text = "-$" + damage;
 	}
