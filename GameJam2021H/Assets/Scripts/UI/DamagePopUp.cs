@@ -9,9 +9,18 @@ public class DamagePopUp : MonoBehaviour
 	public PlayerState state;
 	public Text[] damagePopUps;
 
-	public float speed = 0.1f;
-	public float duration = 1f;
-	public Vector3 startPosition;
+	public float speed = 1f;
+
+	[Range(1, 500)]
+	public float duration = 100f;
+
+    private void Start()
+    {
+        foreach(Text text in damagePopUps)
+        {
+			text.enabled = false;
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -22,7 +31,13 @@ public class DamagePopUp : MonoBehaviour
 				Color disableColor = new Color(text.color.r, text.color.g, text.color.r, 0);
 
 				text.gameObject.transform.position += new Vector3(0, speed);
-				text.color = Color.Lerp(text.color, disableColor, duration);
+				text.color = Color.Lerp(text.color, disableColor, 1f / duration);
+
+				//Slow but logical /August
+				if(text.color == disableColor)
+                {
+					text.enabled = false;
+                }
             }
         }
     }
@@ -31,22 +46,30 @@ public class DamagePopUp : MonoBehaviour
 	{
 		Text textToPop = null;
 
+		Text lowestAlpha = null;
+
 		for (int i = 0; i < damagePopUps.Length; i++)
 		{
 			if (!damagePopUps[i].enabled)
 			{
 				textToPop = damagePopUps[i];
+				break;
 			}
+
+			if(lowestAlpha == null || damagePopUps[i].color.a < lowestAlpha.color.a)
+            {
+				lowestAlpha = damagePopUps[i];
+            }
 		}
 
 		if(textToPop == null)
         {
-			textToPop = damagePopUps[0];
+			textToPop = lowestAlpha;
 			Debug.Log("Damage Pop Ups are being recycled");
         }
 
 		textToPop.enabled = true;
-		textToPop.gameObject.transform.position = startPosition;
+		textToPop.gameObject.transform.position = Camera.main.WorldToScreenPoint(state.gameObject.transform.position);
 		textToPop.color = state.playerColor;
 		textToPop.text = "-$" + damage;
 	}
