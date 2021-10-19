@@ -46,6 +46,8 @@ public class PlayerMovement : MonoBehaviour
             Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
             float dirForce = Mathf.Abs(moveDir.normalized.x * dodgeForce);
             Vector2 transformTo = new Vector2(dirForce, 0);
+
+            // Kollar om det finns en vägg.
             RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, moveDir, transformTo.x, layerMask);
 
             if (raycastHit2D.collider != null)
