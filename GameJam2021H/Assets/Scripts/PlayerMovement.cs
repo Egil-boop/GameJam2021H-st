@@ -1,0 +1,73 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerMovement : MonoBehaviour
+{
+
+    [SerializeField] private float moveSpeed = 3f;
+    [SerializeField] private float jumpForce = 25f;
+    [SerializeField] private float dodgeForce;
+    [SerializeField] LayerMask layerMask;
+    private float jumpCount = 0;
+    private bool canDodge = true;
+    bool isGrounded = true;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        Jump();
+        dodge();
+        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
+        transform.position += movement * Time.deltaTime * moveSpeed;
+
+
+
+    }
+
+
+    void dodge()
+    {
+        if (Input.GetKeyDown(KeyCode.LeftShift) && canDodge)
+        {
+
+            Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
+            float dirForce = Mathf.Abs(moveDir.normalized.x * dodgeForce);
+            Vector2 transformTo = new Vector2(dirForce, 0);
+            RaycastHit2D raycastHit2D = Physics2D.Raycast(transform.position, moveDir, transformTo.x, layerMask);
+
+            if (raycastHit2D.collider != null)
+            {
+                transform.position = new Vector3(raycastHit2D.point.x + (-moveDir.x * gameObject.GetComponent<CircleCollider2D>().bounds.size.x * 0.5f), transform.position.y, 0);
+                return;
+            }
+            transform.position += new Vector3(transformTo.x * moveDir.x, 0, 0);
+
+        }
+    }
+
+    void Jump()
+    {
+        if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < 2))
+        {
+
+            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            isGrounded = false;
+            jumpCount++;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        isGrounded = true;
+        jumpCount = 0;
+
+
+    }
+}
