@@ -24,7 +24,6 @@ public class DamagePopUp : MonoBehaviour
 				text.gameObject.transform.position += new Vector3(0, speed);
 				text.color = Color.Lerp(text.color, disableColor, duration);
             }
-
         }
     }
 
