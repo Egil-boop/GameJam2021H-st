@@ -13,6 +13,11 @@ public class PlayerMovement : MonoBehaviour
     private bool canDodge = true;
     bool isGrounded = true;
 
+
+    private float cooldownTime = 1.5f;
+    private float nextDashTime = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,7 +39,8 @@ public class PlayerMovement : MonoBehaviour
 
     void dodge()
     {
-        if (Input.GetKeyDown(KeyCode.LeftShift) && canDodge)
+
+        if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > nextDashTime)
         {
 
             Vector3 moveDir = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
@@ -45,12 +51,28 @@ public class PlayerMovement : MonoBehaviour
             if (raycastHit2D.collider != null)
             {
                 transform.position = new Vector3(raycastHit2D.point.x + (-moveDir.x * gameObject.GetComponent<CircleCollider2D>().bounds.size.x * 0.5f), transform.position.y, 0);
-                return;
+
             }
-            transform.position += new Vector3(transformTo.x * moveDir.x, 0, 0);
+            else
+            {
+
+                transform.position += new Vector3(transformTo.x * moveDir.x, 0, 0);
+
+            }
+
+
+            nextDashTime = Time.time + cooldownTime;
+
+
+
 
         }
+
+
     }
+
+
+
 
     void Jump()
     {
