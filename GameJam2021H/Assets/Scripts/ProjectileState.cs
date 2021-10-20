@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MLAPI;
+using MLAPI.Messaging;
 
 public class ProjectileState : NetworkBehaviour
 {
-    
+
     public float damage = 0;
     public Rigidbody2D rb;
     public Vector2 velocity = new Vector2(3, 0);
@@ -13,13 +14,20 @@ public class ProjectileState : NetworkBehaviour
 
     private void Awake()
     {
-      
-            rb = gameObject.GetComponent<Rigidbody2D>();
-            rb.velocity = velocity;
-            Destroy(gameObject, 2);
-        
-      
+        if (IsLocalPlayer)
+        {
+            spawnBallServerRpc();
+
+        }
+
     }
 
+    [ServerRpc]
+    private void spawnBallServerRpc()
+    {
+        rb = gameObject.GetComponent<Rigidbody2D>();
+        rb.velocity = velocity;
+        Destroy(gameObject, 2);
+    }
 
 }
