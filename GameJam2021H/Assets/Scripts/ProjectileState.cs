@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
 
-public class ProjectileState : MonoBehaviour
+public class ProjectileState : NetworkBehaviour
 {
     
     public float damage = 0;
@@ -12,9 +13,12 @@ public class ProjectileState : MonoBehaviour
 
     private void Awake()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();
-        rb.velocity = velocity;
-        Destroy(gameObject, 2);
+      
+            rb = gameObject.GetComponent<Rigidbody2D>();
+            rb.velocity = velocity;
+            Destroy(gameObject, 2);
+        
+      
     }
 
 
