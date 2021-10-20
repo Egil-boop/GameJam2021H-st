@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2554065106020547648}
   - component: {fileID: 2554065106020547663}
   - component: {fileID: 2554065106020547660}
+  - component: {fileID: 6287401561448143924}
   - component: {fileID: 2554065106020547662}
   - component: {fileID: 5511385059660871224}
   - component: {fileID: 6693278697604011860}
@@ -155,19 +156,32 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2554065106020547649}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: eb73830c7d17e7d4b925bf175461c40c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   damagePopUp: {fileID: 2554065106071389347}
-  healthUI: {fileID: 0}
-  livesUI: []
-  respawnPoint: {fileID: 0}
+  respawnRange: 5
   playerColor: {r: 0, g: 0, b: 0, a: 1}
   startHealth: 1000
-  startLives: 3
   deathFreezeTimer: 2
+  startLives: 3
+  currentLives: 0
+--- !u!114 &6287401561448143924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2554065106020547649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 008d11b33ea342945847ec008b6fd650, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerUI: {fileID: 5930921872880754247, guid: e93ad2bf9211a1345ad34769d5bf4cf5, type: 3}
+  infoInstance: {fileID: 0}
 --- !u!114 &2554065106020547662
 MonoBehaviour:
   m_ObjectHideFlags: 0
