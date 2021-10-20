@@ -7,6 +7,7 @@ public class PlayerState : MonoBehaviour
 {
     public DamagePopUp damagePopUp;
     public Text healthUI;
+    public List<GameObject> livesUI;
     public Transform respawnPoint;
 
     public Color playerColor;
@@ -70,6 +71,7 @@ public class PlayerState : MonoBehaviour
     private void UpdateUI()
     {
         healthUI.text = "$" + startHealth;
+        livesUI.RemoveAt(livesUI.Count - 1);
     }
 
     public void Die()
@@ -94,5 +96,6 @@ public class PlayerState : MonoBehaviour
 
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
+        Destroy(livesUI[livesUI.Count - 1]);
     }
 }
