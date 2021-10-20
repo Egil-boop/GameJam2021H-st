@@ -1500,17 +1500,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 16, y: 1}
   m_EdgeRadius: 0
---- !u!114 &997333105 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9118535053741099808, guid: 316ff5ec6db5a9b45aa77fef8dc54c6c, type: 3}
-  m_PrefabInstance: {fileID: 9118535052787815249}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &999702515
 GameObject:
   m_ObjectHideFlags: 0
@@ -1733,13 +1722,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damagePopUp: {fileID: 1056635878}
-  healthUI: {fileID: 997333105}
-  livesUI: []
+  healthUI: {fileID: 0}
+  livesUI:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   respawnPoint: {fileID: 1211059393}
   playerColor: {r: 0, g: 0, b: 0, a: 1}
   startHealth: 1000
-  startLives: 3
   deathFreezeTimer: 2
+  startLives: 3
+  currentLives: 0
 --- !u!114 &1005765386
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1752,7 +1745,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f2bbeb50bd42914e9c359f377340077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3
+  moveSpeed: 5.82
   jumpForce: 10
   dodgeForce: 1.5
   layerMask:

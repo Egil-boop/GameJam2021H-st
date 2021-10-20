@@ -6,8 +6,9 @@ using UnityEngine.UI;
 public class PlayerState : MonoBehaviour
 {
     public DamagePopUp damagePopUp;
-    public Text healthUI;
-    public List<GameObject> livesUI;
+    private SetPlayerInfo playerInfo;
+    private Text healthUI;
+    private List<Image> livesUI;
     public Transform respawnPoint;
 
     public Color playerColor;
@@ -26,6 +27,10 @@ public class PlayerState : MonoBehaviour
 
     private void Start()
     {
+        playerInfo = GetComponent<SpawnPlayerInfo>().infoInstance;
+        healthUI = playerInfo.healthUI;
+        livesUI = playerInfo.lives;
+
         currentHealth = startHealth;
         currentLives = startLives;
         healthUI.color = playerColor;
