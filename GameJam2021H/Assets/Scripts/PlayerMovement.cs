@@ -7,7 +7,6 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float jumpForce = 25f;
-    [SerializeField] private float downSpeedBeforeCancelDoubleJump = 1f;
     [SerializeField] private float dodgeForce;
     [SerializeField] LayerMask layerMask;
     private float jumpCount = 0;
