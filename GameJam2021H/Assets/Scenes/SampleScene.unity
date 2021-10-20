@@ -1247,6 +1247,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 3
   jumpForce: 10
+  downSpeedBeforeCancelDoubleJump: 1
   dodgeForce: 1.5
   layerMask:
     serializedVersion: 2

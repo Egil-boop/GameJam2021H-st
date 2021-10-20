@@ -7,6 +7,7 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 3f;
     [SerializeField] private float jumpForce = 25f;
+    [SerializeField] private float downSpeedBeforeCancelDoubleJump = 1f;
     [SerializeField] private float dodgeForce;
     [SerializeField] LayerMask layerMask;
     private float jumpCount = 0;
@@ -87,17 +88,9 @@ public class PlayerMovement : MonoBehaviour
        */
         if (Input.GetButtonDown("Jump") && (jumpCount < 2))
         {
-            if (jumpCount < 1)
-            {
-                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                isGrounded = false;
-            }
-            else
-            {
-                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 0);
-                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-                Debug.Log("hej");
-            }
+            gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 0);
+            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+         
             jumpCount++;
         }
 
