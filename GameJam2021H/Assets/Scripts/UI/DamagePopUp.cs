@@ -42,7 +42,7 @@ public class DamagePopUp : MonoBehaviour
         }
     }
 
-    public void Pop(int damage)
+    public void Pop(int damage, Color color)
 	{
 		Text textToPop = null;
 
@@ -72,8 +72,6 @@ public class DamagePopUp : MonoBehaviour
 
 		textToPop.enabled = true;
 		textToPop.gameObject.transform.position = position;
-
-		Color color = GetComponent<SpawnPlayerInfo>().color;
 		textToPop.color = color;
 		textToPop.text = "-$" + damage;
 	}

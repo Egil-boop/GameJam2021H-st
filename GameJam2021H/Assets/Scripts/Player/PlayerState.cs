@@ -71,7 +71,7 @@ public class PlayerState : MonoBehaviour
         }
 
         currentHealth -= damage;
-        damagePopUp.Pop(damage);
+        damagePopUp.Pop(damage, GetComponent<SpawnPlayerInfo>().color);
         healthUI.text = "$" + currentHealth;
 
         if(currentHealth <= 0)
