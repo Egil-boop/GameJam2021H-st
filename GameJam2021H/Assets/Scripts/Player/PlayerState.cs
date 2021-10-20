@@ -16,11 +16,13 @@ public class PlayerState : MonoBehaviour
     private Rigidbody2D rb;
     private PlayerMovement pm;
 
-    public int startLives = 3;
-    private int currentLives;
-
     public float deathFreezeTimer = 2f;
     private float dieTimer;
+
+    public int startLives = 3;
+
+    [Header("ReadOnly")]
+    public int currentLives;
 
     private void Start()
     {
@@ -38,7 +40,7 @@ public class PlayerState : MonoBehaviour
         //for dev use /August
         if (Input.GetKeyDown(KeyCode.G))
         {
-            TakeDamage(10);
+            TakeDamage(100);
         }
     }
 
@@ -71,7 +73,6 @@ public class PlayerState : MonoBehaviour
     private void UpdateUI()
     {
         healthUI.text = "$" + startHealth;
-        livesUI.RemoveAt(livesUI.Count - 1);
     }
 
     public void Die()
@@ -79,7 +80,12 @@ public class PlayerState : MonoBehaviour
         Debug.Log("Player died!");
 
         currentLives--;
-        if(currentLives <= 0)
+
+        //UI lives
+        Destroy(livesUI[currentLives]);
+        livesUI.RemoveAt(currentLives);
+
+        if (currentLives <= 0)
         {
             //game over
             Debug.LogWarning("TODO: implement GAME OVER!");
@@ -96,6 +102,5 @@ public class PlayerState : MonoBehaviour
 
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
-        Destroy(livesUI[livesUI.Count - 1]);
     }
 }
