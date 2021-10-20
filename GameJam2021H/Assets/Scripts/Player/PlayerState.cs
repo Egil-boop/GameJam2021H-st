@@ -13,6 +13,7 @@ public class PlayerState : MonoBehaviour
     public int startHealth = 1000;
     private int currentHealth;
     private Rigidbody2D rb;
+    private PlayerMovement pm;
 
     public int startLives = 3;
     private int currentLives;
@@ -25,9 +26,10 @@ public class PlayerState : MonoBehaviour
         currentHealth = startHealth;
         currentLives = startLives;
         healthUI.color = playerColor;
-        healthUI.text = "$" + startHealth;
+        UpdateUI();
 
         rb = GetComponent<Rigidbody2D>();
+        pm = GetComponent<PlayerMovement>();
     }
 
     private void Update()
@@ -46,6 +48,11 @@ public class PlayerState : MonoBehaviour
             rb.velocity = Vector2.zero;
             dieTimer -= Time.deltaTime;
         }
+        else
+        {
+            //will break things if used elsewhere /August
+            pm.inputFreeze = false;
+        }
     }
 
     public void TakeDamage(int damage)
@@ -58,6 +65,11 @@ public class PlayerState : MonoBehaviour
         {
             Die();
         }
+    }
+
+    private void UpdateUI()
+    {
+        healthUI.text = "$" + startHealth;
     }
 
     public void Die()
@@ -74,11 +86,13 @@ public class PlayerState : MonoBehaviour
         else
         {
             currentHealth = startHealth;
+            UpdateUI();
         }
 
         transform.position = respawnPoint.position;
         Debug.LogWarning("TODO: make player invulnerable upon death");
 
         dieTimer = deathFreezeTimer;
+        pm.inputFreeze = true;
     }
 }

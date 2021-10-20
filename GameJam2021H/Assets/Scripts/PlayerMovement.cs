@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     private bool canDodge = true;
     bool isGrounded = true;
 
+    public bool inputFreeze;
+
 
     [SerializeField]private float cooldownTime = 1.5f;
     private float nextDashTime = 0;
@@ -27,10 +29,13 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Jump();
-        dodge();
-        Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
-        transform.position += movement * Time.deltaTime * moveSpeed;
+        if (!inputFreeze)
+        {
+            Jump();
+            dodge();
+            Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
+            transform.position += movement * Time.deltaTime * moveSpeed;
+        }
 
 
 
