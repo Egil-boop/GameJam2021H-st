@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using MLAPI;
+using MLAPI.NetworkVariable;
+using MLAPI.Messaging;
 
-public class PlayerState : MonoBehaviour
+public class PlayerState : NetworkBehaviour // NetWorkBehavior
 {
     public DamagePopUp damagePopUp;
     private SetPlayerInfo playerInfo;
@@ -12,8 +15,13 @@ public class PlayerState : MonoBehaviour
 
     public float respawnRange = 5f;
 
+
+    NetworkVariableInt netWorkHealth = new NetworkVariableInt(1000);
     public int startHealth = 1000;
     private int currentHealth;
+
+
+
     private Rigidbody2D rb;
     private PlayerMovement pm;
 
@@ -27,54 +35,79 @@ public class PlayerState : MonoBehaviour
 
     private void Start()
     {
-        playerInfo = GetComponent<SpawnPlayerInfo>().infoInstance;
-        healthUI = playerInfo.healthUI;
-        livesUI = playerInfo.lives;
+        // Local player? NOtes: Egil
+       
+            playerInfo = GetComponent<SpawnPlayerInfo>().infoInstance;
+            healthUI = playerInfo.healthUI;
+            livesUI = playerInfo.lives;
+            netWorkHealth.Value = startHealth;
+            currentHealth = startHealth;
+            currentLives = startLives;
+            UpdateUI();
 
-        currentHealth = startHealth;
-        currentLives = startLives;
-        UpdateUI();
-
-        rb = GetComponent<Rigidbody2D>();
-        pm = GetComponent<PlayerMovement>();
+            rb = GetComponent<Rigidbody2D>();
+            pm = GetComponent<PlayerMovement>();
+        
+      
     }
 
     private void Update()
     {
+
+        // Local player? NOtes: Egil
         //for dev use /August
-        if (Input.GetKeyDown(KeyCode.G))
+        if (IsLocalPlayer)
         {
-            TakeDamage(100);
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+
+                TakeDamageServerRpc(100);
+            }
         }
+       
     }
 
     private void FixedUpdate()
     {
-        if(dieTimer > 0f)
+        // Local player? NOtes: Egil
+        if (IsLocalPlayer)
         {
-            rb.velocity = Vector2.zero;
-            dieTimer -= Time.deltaTime;
+            if (dieTimer > 0f)
+            {
+                rb.velocity = Vector2.zero;
+                dieTimer -= Time.deltaTime;
+            }
+            else
+            {
+                //will break things if used elsewhere /August
+                pm.inputFreeze = false;
+            }
         }
-        else
-        {
-            //will break things if used elsewhere /August
-            pm.inputFreeze = false;
-        }
+     
     }
 
-    public void TakeDamage(int damage)
+    [ServerRpc]
+    public void TakeDamageServerRpc(int damage)
     {
-        if(dieTimer > 0)
+        TakeDamageClientRpc( damage);
+    }
+
+    [ClientRpc]
+    public void TakeDamageClientRpc(int damage)
+    {
+        if (dieTimer > 0)
         {
             Debug.Log("Player is invulnerable!");
             return;
         }
 
-        currentHealth -= damage;
-        damagePopUp.Pop(damage, GetComponent<SpawnPlayerInfo>().color);
+     
+        netWorkHealth.Value -= damage; // Network health så att man kan uppdatera variablen.
+        currentHealth = netWorkHealth.Value; // get currentHealth samma värde så att det inte har sönder resten av koden for now.
+        damagePopUp.Pop(damage); // getComponent Skapar NullPointer.
         healthUI.text = "$" + currentHealth;
 
-        if(currentHealth <= 0)
+        if (currentHealth <= 0)
         {
             Die();
         }
@@ -83,6 +116,7 @@ public class PlayerState : MonoBehaviour
     private void UpdateUI()
     {
         healthUI.text = "$" + startHealth;
+        
     }
 
     public void Die()
@@ -103,6 +137,7 @@ public class PlayerState : MonoBehaviour
         }
         else
         {
+            netWorkHealth.Value = startHealth;
             currentHealth = startHealth;
             UpdateUI();
         }

@@ -163,7 +163,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damagePopUp: {fileID: 2554065106071389347}
   respawnRange: 5
-  playerColor: {r: 0, g: 0, b: 0, a: 1}
   startHealth: 1000
   deathFreezeTimer: 2
   startLives: 3
@@ -182,6 +181,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerUI: {fileID: 5930921872880754247, guid: e93ad2bf9211a1345ad34769d5bf4cf5, type: 3}
   infoInstance: {fileID: 0}
+  color: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &2554065106020547662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,7 +224,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FixedSendsPerSecond: 20
+  FixedSendsPerSecond: 81.4
   AssumeSyncedSends: 1
   InterpolatePosition: 1
   SnapDistance: 10

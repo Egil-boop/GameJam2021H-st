@@ -19,6 +19,7 @@ public class ProjectileState : NetworkBehaviour
             spawnBallServerRpc();
 
         }
+        Destroy(gameObject, 2);
 
     }
 
@@ -27,7 +28,7 @@ public class ProjectileState : NetworkBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         rb.velocity = velocity;
-        Destroy(gameObject, 2);
+        
     }
 
 }
