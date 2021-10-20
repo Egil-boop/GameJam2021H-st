@@ -1,0 +1,360 @@
+fileFormatVersion: 2
+guid: 87276bda58de2604a8760ab2df38a331
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -311891119458862142
+    second: Slenderman 1_0
+  - first:
+      213: 360746185721094386
+    second: Slenderman 1_1
+  - first:
+      213: -5887948183792458218
+    second: Slenderman 1_2
+  - first:
+      213: 5589186339831470925
+    second: Slenderman 1_3
+  - first:
+      213: -3191601335484212981
+    second: Slenderman 1_4
+  - first:
+      213: 4252856408243272703
+    second: Slenderman 1_5
+  - first:
+      213: 213129546995172801
+    second: Slenderman 1_6
+  - first:
+      213: 437731843007537462
+    second: Slenderman 1_7
+  - first:
+      213: 4380566713835826182
+    second: Slenderman 1_8
+  - first:
+      213: 2019009695709887248
+    second: Slenderman 1_9
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 400
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Slenderman 1_0
+      rect:
+        serializedVersion: 2
+        x: 33
+        y: 440
+        width: 101
+        height: 267
+      alignment: 9
+      pivot: {x: 0.64589024, y: 0.96908945}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2cb3e08eda0fbabf0800000000000000
+      internalID: -311891119458862142
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_1
+      rect:
+        serializedVersion: 2
+        x: 222
+        y: 432
+        width: 92
+        height: 269
+      alignment: 9
+      pivot: {x: 0.54576045, y: 0.973427}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2f0abfd9eb0a10500800000000000000
+      internalID: 360746185721094386
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_2
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 567
+        width: 163
+        height: 207
+      alignment: 9
+      pivot: {x: 0.33857456, y: 0.17967571}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 616e421925ec94ea0800000000000000
+      internalID: -5887948183792458218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_3
+      rect:
+        serializedVersion: 2
+        x: 648
+        y: 437
+        width: 152
+        height: 317
+      alignment: 9
+      pivot: {x: 0.51384854, y: 0.9814249}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d4bde110d57c09d40800000000000000
+      internalID: 5589186339831470925
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_4
+      rect:
+        serializedVersion: 2
+        x: 848
+        y: 428
+        width: 149
+        height: 318
+      alignment: 9
+      pivot: {x: 0.52119106, y: 0.96998185}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b091dc5ce7725b3d0800000000000000
+      internalID: -3191601335484212981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_5
+      rect:
+        serializedVersion: 2
+        x: 44
+        y: 48
+        width: 112
+        height: 297
+      alignment: 9
+      pivot: {x: 0.55638355, y: 0.9784067}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ffb7516ee5e250b30800000000000000
+      internalID: 4252856408243272703
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_6
+      rect:
+        serializedVersion: 2
+        x: 245
+        y: 43
+        width: 115
+        height: 297
+      alignment: 9
+      pivot: {x: 0.50000024, y: 0.9677753}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1c589cb913035f200800000000000000
+      internalID: 213129546995172801
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_7
+      rect:
+        serializedVersion: 2
+        x: 387
+        y: 108
+        width: 214
+        height: 436
+      alignment: 9
+      pivot: {x: 0.61803687, y: 0.03893023}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 6316751cac2231600800000000000000
+      internalID: 437731843007537462
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_8
+      rect:
+        serializedVersion: 2
+        x: 665
+        y: 25
+        width: 239
+        height: 375
+      alignment: 9
+      pivot: {x: 0.411925, y: 0.97713095}
+      border: {x: 0, y: 71, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 60ca51d8736eacc30800000000000000
+      internalID: 4380566713835826182
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Slenderman 1_9
+      rect:
+        serializedVersion: 2
+        x: 906
+        y: 29
+        width: 232
+        height: 375
+      alignment: 9
+      pivot: {x: 0.27770603, y: 0.9799375}
+      border: {x: 0, y: 75, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 01b7bdefe96f40c10800000000000000
+      internalID: 2019009695709887248
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
