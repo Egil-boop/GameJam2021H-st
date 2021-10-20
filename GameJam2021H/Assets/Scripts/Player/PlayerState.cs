@@ -12,7 +12,6 @@ public class PlayerState : MonoBehaviour
 
     public float respawnRange = 5f;
 
-    public Color playerColor;
     public int startHealth = 1000;
     private int currentHealth;
     private Rigidbody2D rb;
@@ -34,7 +33,6 @@ public class PlayerState : MonoBehaviour
 
         currentHealth = startHealth;
         currentLives = startLives;
-        healthUI.color = playerColor;
         UpdateUI();
 
         rb = GetComponent<Rigidbody2D>();
@@ -110,7 +108,6 @@ public class PlayerState : MonoBehaviour
         }
 
         transform.position = CalculateRespawnPoint();
-        Debug.LogWarning("TODO: make player invulnerable upon death");
 
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;

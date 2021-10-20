@@ -7,24 +7,32 @@ public class SpawnPlayerInfo : MonoBehaviour
 {
     public GameObject playerUI;
 
-    private PlayerState state;
-
     [Header("Read Only")]
     public SetPlayerInfo infoInstance;
+    public Color color;
 
     private void Awake()
     {
-        state = GetComponent<PlayerState>();
-
         infoInstance = Instantiate(playerUI, GameObject.Find("PlayerTextUI").transform).GetComponent<SetPlayerInfo>();
 
-        infoInstance.playerName.text = "placeholder name";
-        infoInstance.playerName.color = state.playerColor;
-        infoInstance.healthUI.color = state.playerColor;
+        infoInstance.playerName.text = PlayerPrefs.GetString("PlayerName");
+
+        color = HexToColor(PlayerPrefs.GetString("PlayerColor"));
+
+        infoInstance.playerName.color = color;
+        infoInstance.healthUI.color = color;
 
         foreach (Image i in infoInstance.lives)
         {
-            i.color = state.playerColor;
+            i.color = color;
         }
+    }
+
+    Color HexToColor(string hex)
+    {
+        byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+        byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+        byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+        return new Color32(r, g, b, 255);
     }
 }
