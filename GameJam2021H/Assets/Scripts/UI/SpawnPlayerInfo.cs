@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class SpawnPlayerInfo : MonoBehaviour
 {
-    public GameObject infoParent;
     public GameObject playerUI;
 
     private PlayerState state;
@@ -17,7 +16,7 @@ public class SpawnPlayerInfo : MonoBehaviour
     {
         state = GetComponent<PlayerState>();
 
-        infoInstance = Instantiate(playerUI, infoParent.transform).GetComponent<SetPlayerInfo>();
+        infoInstance = Instantiate(playerUI, GameObject.Find("PlayerTextUI").transform).GetComponent<SetPlayerInfo>();
 
         infoInstance.playerName.text = "placeholder name";
         infoInstance.playerName.color = state.playerColor;

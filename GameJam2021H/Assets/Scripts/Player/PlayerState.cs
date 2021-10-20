@@ -9,7 +9,8 @@ public class PlayerState : MonoBehaviour
     private SetPlayerInfo playerInfo;
     private Text healthUI;
     private List<Image> livesUI;
-    public Transform respawnPoint;
+
+    public float respawnRange = 5f;
 
     public Color playerColor;
     public int startHealth = 1000;
@@ -65,6 +66,12 @@ public class PlayerState : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        if(dieTimer > 0)
+        {
+            Debug.Log("Player is invulnerable!");
+            return;
+        }
+
         currentHealth -= damage;
         damagePopUp.Pop(damage);
         healthUI.text = "$" + currentHealth;
@@ -102,10 +109,15 @@ public class PlayerState : MonoBehaviour
             UpdateUI();
         }
 
-        transform.position = respawnPoint.position;
+        transform.position = CalculateRespawnPoint();
         Debug.LogWarning("TODO: make player invulnerable upon death");
 
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
+    }
+
+    private Vector3 CalculateRespawnPoint()
+    {
+        return new Vector3(Random.Range(-respawnRange, respawnRange), 2);
     }
 }
