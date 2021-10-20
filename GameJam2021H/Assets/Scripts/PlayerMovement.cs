@@ -78,13 +78,31 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < 2))
+       /* if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < 2))
         {
-
             gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
             isGrounded = false;
             jumpCount++;
         }
+       */
+        if (Input.GetButtonDown("Jump") && (jumpCount < 2))
+        {
+            if (jumpCount < 1)
+            {
+                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                isGrounded = false;
+            }
+            else
+            {
+                gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 0);
+                gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+                Debug.Log("hej");
+            }
+            jumpCount++;
+        }
+
+        
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
