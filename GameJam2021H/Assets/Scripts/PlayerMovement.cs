@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI;
+using MLAPI.Messaging;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
 
     [SerializeField] private float moveSpeed = 3f;
@@ -16,25 +18,37 @@ public class PlayerMovement : MonoBehaviour
     public bool inputFreeze;
 
 
-    [SerializeField]private float cooldownTime = 1.5f;
+    [SerializeField] private float cooldownTime = 1.5f;
     private float nextDashTime = 0;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        //if (IsLocalPlayer)
+        //{
+
+        //}
+
 
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!inputFreeze)
+
+        if (IsLocalPlayer)
         {
-            Jump();
-            dodge();
-            Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
-            transform.position += movement * Time.deltaTime * moveSpeed;
+            if (!inputFreeze)
+            {
+
+                Jump();
+                dodge();
+                Vector3 movement = new Vector3(Input.GetAxis("Horizontal"), 0f, 0f);
+                transform.position += movement * Time.deltaTime * moveSpeed;
+            }
+
+
         }
 
 
@@ -44,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
 
     void dodge()
     {
+
 
         if (Input.GetKeyDown(KeyCode.LeftShift) && Time.time > nextDashTime)
         {
@@ -81,27 +96,30 @@ public class PlayerMovement : MonoBehaviour
 
 
 
+
+
     void Jump()
     {
-       /* if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < 2))
-        {
-            gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-            isGrounded = false;
-            jumpCount++;
-        }
-       */
+        /* if (Input.GetButtonDown("Jump") && (isGrounded || jumpCount < 2))
+         {
+             gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+             isGrounded = false;
+             jumpCount++;
+         }
+        */
         if (Input.GetButtonDown("Jump") && (jumpCount < 2))
         {
             gameObject.GetComponent<Rigidbody2D>().velocity = new Vector2(gameObject.GetComponent<Rigidbody2D>().velocity.x, 0);
             gameObject.GetComponent<Rigidbody2D>().AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
-         
+
             jumpCount++;
         }
 
-        
+
 
     }
 
+    // [ClientRpc(Delivery = RpcDelivery.Unreliable)]
     private void OnCollisionEnter2D(Collision2D collision)
     {
         isGrounded = true;
