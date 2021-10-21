@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MLAPI;
 using MLAPI.Messaging;
-public class Projectile : NetworkBehaviour
+public class Projectile : MonoBehaviour
 {
     [HideInInspector] public float projectileVelocity;
     public float deathTimer = 15f;
@@ -16,15 +16,14 @@ public class Projectile : NetworkBehaviour
 
     private void Awake()
     {
-        if (IsLocalPlayer)
-        {
+       
             rb = GetComponent<Rigidbody2D>();
             sr = GetComponent<SpriteRenderer>();
             lm = gameObject.layer;
 
             Physics2D.IgnoreLayerCollision(lm, lm);
 
-        }
+        
 
         Destroy(gameObject, deathTimer);
     }
@@ -37,10 +36,9 @@ public class Projectile : NetworkBehaviour
     
     private void FixedUpdate()
     {
-        if (IsLocalPlayer)
-        {
+        
             rb.velocity = transform.up * projectileVelocity;
-        }
+        
         
     }
 

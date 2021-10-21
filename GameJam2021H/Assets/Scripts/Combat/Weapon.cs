@@ -1,8 +1,7 @@
 using MLAPI;
 using UnityEngine;
 using UnityEngine.UI;
-using MLAPI.Messaging;
-using MLAPI.Spawning;
+
 public class Weapon : NetworkBehaviour
 {
     public GameObject projectile;
@@ -30,14 +29,13 @@ public class Weapon : NetworkBehaviour
     void Start()
     {
 
-        if (IsLocalPlayer)
-        {
+        
             lr = GetComponent<LineRenderer>();
             lr.enabled = false;
             chargeSlider.maxValue = maxCharge;
             state = GetComponent<PlayerState>();
             color = GetComponent<SpawnPlayerInfo>().color;
-        }
+        
 
 
 
@@ -47,6 +45,7 @@ public class Weapon : NetworkBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (IsLocalPlayer)
         {
             if (attackTimer <= 0f && state.dieTimer <= 0f)
@@ -58,8 +57,8 @@ public class Weapon : NetworkBehaviour
                 }
                 else if (Input.GetButtonUp("Fire1") && isCharging)
                 {
-                    shootServerRpc();
-                    ResetShotServerRpc();
+                    shootServerRp();
+                    ResetShotServerRp();
                 }
             }
 
@@ -67,17 +66,19 @@ public class Weapon : NetworkBehaviour
 
             if (isCharging)
             {
-                DrawSightServerRpc();
+                DrawSightServerRp();
             }
+
         }
+
+
 
 
     }
 
     private void FixedUpdate()
     {
-        if (IsLocalPlayer)
-        {
+        
             if (isCharging && currentCharge < maxCharge)
             {
                 float increment = Time.deltaTime * chargeRate;
@@ -89,12 +90,12 @@ public class Weapon : NetworkBehaviour
             {
                 attackTimer -= Time.deltaTime;
             }
-        }
+        
 
     }
 
-    [ServerRpc]
-    public void shootServerRpc()
+    
+    public void shootServerRp()
     {
 
 
@@ -123,7 +124,7 @@ public class Weapon : NetworkBehaviour
 
         instance.damage = damage * 2;
         instance.projectileVelocity = projectileSpeed;
-        //instance.GetSR().color = state.playerColor;
+        instance.GetSR().color = state.playerColor;
 
 
 
@@ -132,14 +133,14 @@ public class Weapon : NetworkBehaviour
     }
 
 
-    [ServerRpc]
-    private void ResetShotServerRpc()
+    
+    private void ResetShotServerRp()
     {
-        ResetClientRpc();
+        ResetClientRp();
     }
 
-    [ClientRpc]
-    public void ResetClientRpc()
+    
+    public void ResetClientRp()
     {
         isCharging = false;
         currentCharge = 0;
@@ -148,15 +149,15 @@ public class Weapon : NetworkBehaviour
         lr.enabled = false;
     }
 
-    [ServerRpc]
-    private void DrawSightServerRpc()
+   
+    private void DrawSightServerRp()
     {
-        DrawSightClientRpc();
+        DrawSightClientRp();
     }
 
 
-    [ClientRpc]
-    private void DrawSightClientRpc()
+   
+    private void DrawSightClientRp()
     {
         lr.SetPosition(0, transform.position);
         lr.SetPosition(1, mousePos);
