@@ -15,24 +15,15 @@ public class SpawnPlayerInfo : MonoBehaviour
     {
         infoInstance = Instantiate(playerUI, GameObject.Find("PlayerTextUI").transform).GetComponent<SetPlayerInfo>();
 
+        color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
         //infoInstance.playerName.text = PlayerPrefs.GetString("PlayerName");
 
-        // color = HexToColor(PlayerPrefs.GetString("PlayerColor"));
-
-        infoInstance.playerName.color = new Color(Random.Range(0f, 1f),Random.Range(0f,1f), Random.Range(0f,1f));
-        //infoInstance.healthUI.color = color;
+        infoInstance.healthUI.color = color;
+        infoInstance.playerName.color = color;
 
         foreach (Image i in infoInstance.lives)
         {
-            i.color = Color.red;
+            i.color = color;
         }
-    }
-
-    public Color HexToColor(string hex)
-    {
-        byte r = byte.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
-        byte g = byte.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
-        byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
-        return new Color32(r, g, b, 255);
     }
 }
