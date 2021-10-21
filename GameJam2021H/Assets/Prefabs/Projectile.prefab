@@ -85,6 +85,7 @@ GameObject:
   - component: {fileID: 8662746888268156601}
   - component: {fileID: 7310748059271348043}
   - component: {fileID: 85560846914949753}
+  - component: {fileID: 8848367741490518478}
   m_Layer: 8
   m_Name: Projectile
   m_TagString: PlayerProjectile
@@ -210,3 +211,20 @@ MonoBehaviour:
   projectileVelocity: 10
   deathTimer: 15
   damage: 100
+--- !u!114 &8848367741490518478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4461626717584013892}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  NetworkInstanceId: 0
+  PrefabHash: 11099223430259111388
+  PrefabHashGenerator: Projectile
+  AlwaysReplicateAsRoot: 0
+  DontDestroyWithOwner: 0

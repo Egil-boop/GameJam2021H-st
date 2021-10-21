@@ -151,7 +151,7 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
 
-        GetComponent<Weapon>().shootServerRp();  
+        GetComponent<Weapon>().shootServerRpc();  
     }
 
     private Vector3 CalculateRespawnPoint()
