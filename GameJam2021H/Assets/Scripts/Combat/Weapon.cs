@@ -30,7 +30,7 @@ public class Weapon : NetworkBehaviour
     // Start is called before the first frame update
     void Start()
     {
-<<<<<<< HEAD
+
         if (IsLocalPlayer)
         {
             lr = GetComponent<LineRenderer>();
@@ -40,14 +40,9 @@ public class Weapon : NetworkBehaviour
             color = GetComponent<SpawnPlayerInfo>().color;
         }
         
-=======
-        lr = GetComponent<LineRenderer>();
-        lr.enabled = false;
-        chargeSlider.maxValue = maxCharge;
-        currentCharge = 0;
-        state = GetComponent<PlayerState>();
-        color = GetComponent<SpawnPlayerInfo>().color;
->>>>>>> d7a108d35ab49657fa6030e0df58e48e59e41205
+
+        
+
     }
 
     // Update is called once per frame
