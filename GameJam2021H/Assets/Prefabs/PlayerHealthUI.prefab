@@ -318,6 +318,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5930921872880754248}
   - component: {fileID: 6725951379422083911}
+  - component: {fileID: -1482843320166207727}
   m_Layer: 0
   m_Name: PlayerHealthUI
   m_TagString: Untagged
@@ -365,6 +366,18 @@ MonoBehaviour:
   - {fileID: 8556001573721951686}
   - {fileID: 8655809142601311762}
   - {fileID: 479892739599592840}
+--- !u!225 &-1482843320166207727
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5930921872880754247}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &6098711680693558264
 GameObject:
   m_ObjectHideFlags: 0

@@ -27,11 +27,12 @@ public class Weapon : MonoBehaviour
     public float currentCharge = 0;
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         lr = GetComponent<LineRenderer>();
         lr.enabled = false;
         chargeSlider.maxValue = maxCharge;
+        currentCharge = 0;
         state = GetComponent<PlayerState>();
         color = GetComponent<SpawnPlayerInfo>().color;
     }
