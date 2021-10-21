@@ -39,28 +39,30 @@ public class Projectile : NetworkBehaviour
   
     private void FixedUpdate()
     {
+        Vector2 newVelocity = transform.up * projectileVelocity;
+        rb.velocity = newVelocity;
 
-
-        testServerRpc();
+        Vector2 position = transform.position;
+        testServerRpc(position);
 
     }
     [ServerRpc(RequireOwnership = false)]
-    private void testServerRpc()
+    private void testServerRpc(Vector2 newPosition)
     {
-        testClientRpc();
+        testClientRpc(newPosition);
     }
 
     [ClientRpc]
-    private void testClientRpc()
+    private void testClientRpc(Vector2 newPosition)
     {
-        rb.velocity = transform.up * projectileVelocity;
+        rb.position = newPosition;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent(out PlayerState enemy) && !collidedEnemies.Contains(enemy.gameObject))
         {
-            enemy.TakeDamageClientRpc(damage);
+            enemy.TakeDamageServerRpc(damage);
 
             collidedEnemies.Add(enemy.gameObject);
         }

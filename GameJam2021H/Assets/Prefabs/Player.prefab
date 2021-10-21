@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 6287401561448143924}
   - component: {fileID: -1675387720698213742}
   - component: {fileID: 2554065106020547662}
+  - component: {fileID: 1014209829388342584}
   - component: {fileID: 5511385059660871224}
   - component: {fileID: 6693278697604011860}
   - component: {fileID: 3015821002752355663}
@@ -193,7 +194,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2554065106020547649}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 92ea2e35a53ca9948bf0e79966282a83, type: 3}
   m_Name: 
@@ -219,6 +220,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 5131833853450531168, guid: b5bb15421da0d924692b3bffb3b73b9b, type: 3}
+--- !u!114 &1014209829388342584
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2554065106020547649}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 097816f979dc555478d5d5351d3cbfc2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bulletTrail: {fileID: 6889952151481094156, guid: a860d19dbf9b9dc4ca5faa39c0f8c877, type: 3}
+  projectileOffset: 2
+  projectile: {fileID: 4461626717584013892, guid: 2093386ba09514c4db478fab9893ad56, type: 3}
+  maxCharge: 50
+  chargeRate: 10
+  minCharge: 1
+  projectileSpeed: 10
+  currentCharge: 0
 --- !u!114 &5511385059660871224
 MonoBehaviour:
   m_ObjectHideFlags: 0
