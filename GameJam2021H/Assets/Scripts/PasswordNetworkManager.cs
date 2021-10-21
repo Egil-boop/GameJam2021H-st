@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using MLAPI.Transports.UNET; 
 
 using TMPro;
 using MLAPI;
@@ -13,6 +14,10 @@ public class PasswordNetworkManager : MonoBehaviour
     [SerializeField] private TMP_InputField passwordInputField;
     [SerializeField] private GameObject passwordEntryUI;
     [SerializeField] private GameObject leaveButton;
+
+    public string ipAdress = "127.0.0.1"; // Local host adress
+
+    UNetTransport transport;
 
     private void Start()
     {
@@ -47,6 +52,9 @@ public class PasswordNetworkManager : MonoBehaviour
 
     public void Client()
     {
+
+        transport = NetworkManager.Singleton.GetComponent<UNetTransport>();
+        transport.ConnectAddress = ipAdress;
         NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes(passwordInputField.text);
         NetworkManager.Singleton.StartClient();
 
@@ -109,4 +117,11 @@ public class PasswordNetworkManager : MonoBehaviour
         passwordEntryUI.SetActive(passwordEntryUi);
         this.leaveButton.SetActive(leaveButton);
     }
+
+    public void ipAdressChangers(string newAdreess)
+    {
+
+        this.ipAdress = newAdreess;
+    }
+
 }
