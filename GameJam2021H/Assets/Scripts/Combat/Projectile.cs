@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using MLAPI;
 using MLAPI.Messaging;
-public class Projectile : MonoBehaviour
+public class Projectile : NetworkBehaviour
 {
+    
     [HideInInspector] public float projectileVelocity;
     public float deathTimer = 15f;
     private List<GameObject> collidedEnemies = new List<GameObject>();
@@ -14,16 +15,18 @@ public class Projectile : MonoBehaviour
 
     public int damage = 0;
 
+  
     private void Awake()
     {
-       
-            rb = GetComponent<Rigidbody2D>();
-            sr = GetComponent<SpriteRenderer>();
-            lm = gameObject.layer;
-
-            Physics2D.IgnoreLayerCollision(lm, lm);
 
         
+        rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+        lm = gameObject.layer;
+
+        Physics2D.IgnoreLayerCollision(lm, lm);
+
+
 
         Destroy(gameObject, deathTimer);
     }
@@ -33,13 +36,24 @@ public class Projectile : MonoBehaviour
         damage = newDamage;
     }
 
-    
+  
     private void FixedUpdate()
     {
-        
-            rb.velocity = transform.up * projectileVelocity;
-        
-        
+
+
+        testServerRpc();
+
+    }
+    [ServerRpc(RequireOwnership = false)]
+    private void testServerRpc()
+    {
+        testClientRpc();
+    }
+
+    [ClientRpc]
+    private void testClientRpc()
+    {
+        rb.velocity = transform.up * projectileVelocity;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

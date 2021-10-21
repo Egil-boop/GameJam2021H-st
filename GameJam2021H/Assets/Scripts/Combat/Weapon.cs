@@ -31,11 +31,16 @@ public class Weapon : NetworkBehaviour
     {
 
 
+
         lr = GetComponent<LineRenderer>();
         lr.enabled = false;
         chargeSlider.maxValue = maxCharge;
         state = GetComponent<PlayerState>();
         color = GetComponent<SpawnPlayerInfo>().color;
+
+
+
+
 
 
 
@@ -58,8 +63,8 @@ public class Weapon : NetworkBehaviour
                 }
                 else if (Input.GetButtonUp("Fire1") && isCharging)
                 {
-                    shootServerRpc();
-                    ResetShotServerRp();
+                    ShootServerRpc();
+                    ResetShotServerRpc();
                 }
             }
 
@@ -67,7 +72,7 @@ public class Weapon : NetworkBehaviour
 
             if (isCharging)
             {
-                DrawSightServerRp();
+                DrawSight();
             }
 
         }
@@ -79,33 +84,31 @@ public class Weapon : NetworkBehaviour
 
     private void FixedUpdate()
     {
+              
+            if (isCharging && currentCharge < maxCharge)
+            {
+                float increment = Time.deltaTime * chargeRate;
+                currentCharge += increment;
+                chargeSlider.value = currentCharge;
+            }
 
-        if (isCharging && currentCharge < maxCharge)
-        {
-            float increment = Time.deltaTime * chargeRate;
-            currentCharge += increment;
-            chargeSlider.value = currentCharge;
-        }
-
-        if (attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
-        }
-
-
+            if (attackTimer > 0)
+            {
+                attackTimer -= Time.deltaTime;
+            }
+                    
     }
 
+  
     [ServerRpc]
-    public void shootServerRpc()
+    public void ShootServerRpc()
     {
-
-
         ShootClientRpc();
-
     }
 
-    [ClientRpc]
-    private void ShootClientRpc()
+
+   [ClientRpc]
+    public void ShootClientRpc()
     {
         Vector3 lookDir = (Vector3)mousePos - transform.localPosition;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
@@ -113,8 +116,9 @@ public class Weapon : NetworkBehaviour
         Vector3 shootPosition = transform.localPosition + lookDir;
         shootPosition = transform.localPosition + Vector3.ClampMagnitude(new Vector3(lookDir.x, lookDir.y), projectileOffset);
 
+        
         Projectile instance = Instantiate(projectile, shootPosition, projectileAngle).GetComponent<Projectile>();
-        //Instantiate(projectile, shootPosition, projectileAngle);
+       
 
         if (currentCharge < minCharge)
         {
@@ -135,14 +139,14 @@ public class Weapon : NetworkBehaviour
     }
 
 
-
-    private void ResetShotServerRp()
+    [ServerRpc]
+    private void ResetShotServerRpc()
     {
-        ResetClientRp();
+        ResetClientRpc();
     }
 
-
-    public void ResetClientRp()
+    [ClientRpc]
+    public void ResetClientRpc()
     {
         isCharging = false;
         currentCharge = 0;
@@ -152,16 +156,14 @@ public class Weapon : NetworkBehaviour
     }
 
 
-    private void DrawSightServerRp()
+
+
+
+    private void DrawSight()
     {
-        DrawSightClientRp();
-    }
-
-
-
-    private void DrawSightClientRp()
-    {
-        lr.SetPosition(0, transform.position);
-        lr.SetPosition(1, mousePos);
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, mousePos);
+      
+       
     }
 }

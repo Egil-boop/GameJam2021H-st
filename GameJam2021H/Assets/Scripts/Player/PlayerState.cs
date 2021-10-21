@@ -6,7 +6,7 @@ using MLAPI;
 using MLAPI.NetworkVariable;
 using MLAPI.Messaging;
 
-public class PlayerState : NetworkBehaviour // NetWorkBehavior
+public class PlayerState : NetworkBehaviour 
 {
     public DamagePopUp damagePopUp;
     private SetPlayerInfo playerInfo;
@@ -151,7 +151,7 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
 
-        GetComponent<Weapon>().shootServerRpc();  
+        GetComponent<Weapon>().ShootClientRpc();  
     }
 
     private Vector3 CalculateRespawnPoint()
