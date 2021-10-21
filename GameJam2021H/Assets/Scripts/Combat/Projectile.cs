@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Projectile : MonoBehaviour
+using MLAPI;
+using MLAPI.Messaging;
+public class Projectile : NetworkBehaviour
 {
     [HideInInspector] public float projectileVelocity;
     public float deathTimer = 15f;
@@ -15,11 +16,15 @@ public class Projectile : MonoBehaviour
 
     private void Awake()
     {
-        rb = GetComponent<Rigidbody2D>();
-        sr = GetComponent<SpriteRenderer>();
-        lm = gameObject.layer;
+        if (IsLocalPlayer)
+        {
+            rb = GetComponent<Rigidbody2D>();
+            sr = GetComponent<SpriteRenderer>();
+            lm = gameObject.layer;
 
-        Physics2D.IgnoreLayerCollision(lm, lm);
+            Physics2D.IgnoreLayerCollision(lm, lm);
+
+        }
 
         Destroy(gameObject, deathTimer);
     }
@@ -31,7 +36,11 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rb.velocity = transform.up * projectileVelocity;
+        if (IsLocalPlayer)
+        {
+            rb.velocity = transform.up * projectileVelocity;
+        }
+        
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

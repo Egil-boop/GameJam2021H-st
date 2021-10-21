@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
-public class Weapon : MonoBehaviour
+using MLAPI;
+using MLAPI.Messaging;
+public class Weapon : NetworkBehaviour
 {
     public GameObject projectile;
     public Slider chargeSlider;
@@ -29,54 +30,74 @@ public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        lr = GetComponent<LineRenderer>();
-        lr.enabled = false;
-        chargeSlider.maxValue = maxCharge;
-        state = GetComponent<PlayerState>();
-        color = GetComponent<SpawnPlayerInfo>().color;
+        if (IsLocalPlayer)
+        {
+            lr = GetComponent<LineRenderer>();
+            lr.enabled = false;
+            chargeSlider.maxValue = maxCharge;
+            state = GetComponent<PlayerState>();
+            color = GetComponent<SpawnPlayerInfo>().color;
+        }
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(attackTimer <= 0f && state.dieTimer <= 0f)
+        if (IsLocalPlayer)
         {
-            if (Input.GetButtonDown("Fire1"))
+            if (attackTimer <= 0f && state.dieTimer <= 0f)
             {
-                isCharging = true;
-                lr.enabled = true;
+                if (Input.GetButtonDown("Fire1"))
+                {
+                    isCharging = true;
+                    lr.enabled = true;
+                }
+                else if (Input.GetButtonUp("Fire1") && isCharging)
+                {
+                    shootServerRpc();
+                    ResetShotServerRpc();
+                }
             }
-            else if (Input.GetButtonUp("Fire1") && isCharging)
+
+            mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+
+            if (isCharging)
             {
-                Shoot();
-                ResetShot();
+                DrawSightServerRpc();
             }
         }
 
-        mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-
-        if (isCharging)
-        {
-            DrawSight();
-        }
+      
     }
 
     private void FixedUpdate()
     {
-        if (isCharging && currentCharge < maxCharge)
+        if (IsLocalPlayer)
         {
-            float increment = Time.deltaTime * chargeRate;
-            currentCharge += increment;
-            chargeSlider.value = currentCharge;
-        }
+            if (isCharging && currentCharge < maxCharge)
+            {
+                float increment = Time.deltaTime * chargeRate;
+                currentCharge += increment;
+                chargeSlider.value = currentCharge;
+            }
 
-        if(attackTimer > 0)
-        {
-            attackTimer -= Time.deltaTime;
+            if (attackTimer > 0)
+            {
+                attackTimer -= Time.deltaTime;
+            }
         }
+       
     }
 
-    private void Shoot()
+    [ServerRpc]
+    private void shootServerRpc()
+    {
+        shootServerRpc();
+    }
+
+    [ClientRpc]
+    private void ShootClientRpc()
     {
         Vector3 lookDir = (Vector3)mousePos - transform.localPosition;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
@@ -99,7 +120,15 @@ public class Weapon : MonoBehaviour
         state.TakeDamageClientRpc(damage);
     }
 
-    public void ResetShot()
+
+    [ServerRpc]
+    private void ResetShotServerRpc()
+    {
+        ResetShotClientRpc();
+    }
+
+    [ClientRpc]
+    public void ResetShotClientRpc()
     {
         isCharging = false;
         currentCharge = 0;
@@ -108,7 +137,15 @@ public class Weapon : MonoBehaviour
         lr.enabled = false;
     }
 
-    private void DrawSight()
+    [ServerRpc]
+    private void DrawSightServerRpc()
+    {
+        DrawSightClientRpc();
+    }
+
+
+    [ClientRpc]
+    private void DrawSightClientRpc()
     {
         lr.SetPosition(0, transform.position);
         lr.SetPosition(1, mousePos);
