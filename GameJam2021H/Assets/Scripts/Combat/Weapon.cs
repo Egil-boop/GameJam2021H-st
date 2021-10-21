@@ -27,7 +27,7 @@ public class Weapon : MonoBehaviour
     public float currentCharge = 0;
 
     // Start is called before the first frame update
-    void Awake()
+    void Start()
     {
         lr = GetComponent<LineRenderer>();
         lr.enabled = false;
