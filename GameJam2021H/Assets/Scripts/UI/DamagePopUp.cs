@@ -12,11 +12,15 @@ public class DamagePopUp : NetworkBehaviour
 
     public float speed = 1f;
 
+    private Color color;
+
     [Range(1, 500)]
     public float duration = 100f;
 
     private void Start()
     {
+        color = state.playerColor;
+
         foreach (Text text in damagePopUps)
         {
             text.enabled = false;
@@ -56,6 +60,7 @@ public class DamagePopUp : NetworkBehaviour
             if (!damagePopUps[i].enabled)
             {
                 textToPop = damagePopUps[i];
+                print(i);
                 break;
             }
 
@@ -74,6 +79,7 @@ public class DamagePopUp : NetworkBehaviour
         Vector3 position = Camera.main.WorldToScreenPoint(state.gameObject.transform.position) + new Vector3(Random.Range(-50, 50), 0, 0);
 
         textToPop.enabled = true;
+        textToPop.color = color;
         textToPop.gameObject.transform.position = position;
         textToPop.text = "-$" + damage;
     }

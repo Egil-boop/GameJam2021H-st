@@ -10,9 +10,11 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
 {
     public DamagePopUp damagePopUp;
     private SetPlayerInfo playerInfo;
+    private SpawnPlayerInfo spawnPlayerInfo;
     private Text healthUI;
     private List<Image> livesUI;
 
+    
     public float respawnRange = 5f;
 
 
@@ -20,35 +22,37 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
     public int startHealth = 1000;
     private int currentHealth;
 
-
-
     private Rigidbody2D rb;
     private PlayerMovement pm;
 
     public float deathFreezeTimer = 2f;
-    private float dieTimer;
+    
 
     public int startLives = 3;
 
     [Header("ReadOnly")]
     public int currentLives;
+    public Color playerColor;
+    public float dieTimer;
 
     private void Start()
     {
         // Local player? NOtes: Egil
-       
-            playerInfo = GetComponent<SpawnPlayerInfo>().infoInstance;
-            healthUI = playerInfo.healthUI;
-            livesUI = playerInfo.lives;
-            netWorkHealth.Value = startHealth;
-            currentHealth = startHealth;
-            currentLives = startLives;
-            UpdateUI();
 
-            rb = GetComponent<Rigidbody2D>();
-            pm = GetComponent<PlayerMovement>();
-        
-      
+        spawnPlayerInfo = GetComponent<SpawnPlayerInfo>();
+        playerInfo = spawnPlayerInfo.infoInstance;
+        playerColor = spawnPlayerInfo.color;
+        healthUI = playerInfo.healthUI;
+        livesUI = playerInfo.lives;
+        netWorkHealth.Value = startHealth;
+        currentHealth = startHealth;
+        currentLives = startLives;
+        UpdateUI();
+
+        rb = GetComponent<Rigidbody2D>();
+        pm = GetComponent<PlayerMovement>();
+
+
     }
 
     private void Update()
@@ -64,7 +68,7 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
                 TakeDamageServerRpc(100);
             }
         }
-       
+
     }
 
     private void FixedUpdate()
@@ -83,13 +87,13 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
                 pm.inputFreeze = false;
             }
         }
-     
+
     }
 
     [ServerRpc]
     public void TakeDamageServerRpc(int damage)
     {
-        TakeDamageClientRpc( damage);
+        TakeDamageClientRpc(damage);
     }
 
     [ClientRpc]
@@ -101,11 +105,11 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
             return;
         }
 
-     
+
         netWorkHealth.Value -= damage; // Network health så att man kan uppdatera variablen.
         currentHealth = netWorkHealth.Value; // get currentHealth samma värde så att det inte har sönder resten av koden for now.
         damagePopUp.Pop(damage); // getComponent Skapar NullPointer.
-        healthUI.text = "$" + currentHealth;
+        UpdateUI();
 
         if (currentHealth <= 0)
         {
@@ -115,8 +119,8 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
 
     private void UpdateUI()
     {
-        healthUI.text = "$" + startHealth;
-        
+        healthUI.text = "$" + currentHealth;
+
     }
 
     public void Die()
@@ -146,6 +150,8 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
 
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
+
+        GetComponent<Weapon>().shootServerRp();  
     }
 
     private Vector3 CalculateRespawnPoint()
