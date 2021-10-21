@@ -34,6 +34,7 @@ public class Projectile : NetworkBehaviour
         damage = newDamage;
     }
 
+    
     private void FixedUpdate()
     {
         if (IsLocalPlayer)

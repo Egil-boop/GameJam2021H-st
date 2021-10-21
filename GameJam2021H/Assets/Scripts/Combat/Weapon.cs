@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using MLAPI;
 using UnityEngine;
 using UnityEngine.UI;
-using MLAPI;
 using MLAPI.Messaging;
+using MLAPI.Spawning;
 public class Weapon : NetworkBehaviour
 {
     public GameObject projectile;
@@ -39,9 +38,9 @@ public class Weapon : NetworkBehaviour
             state = GetComponent<PlayerState>();
             color = GetComponent<SpawnPlayerInfo>().color;
         }
-        
 
-        
+
+
 
     }
 
@@ -72,7 +71,7 @@ public class Weapon : NetworkBehaviour
             }
         }
 
-      
+
     }
 
     private void FixedUpdate()
@@ -91,13 +90,16 @@ public class Weapon : NetworkBehaviour
                 attackTimer -= Time.deltaTime;
             }
         }
-       
+
     }
 
     [ServerRpc]
-    private void shootServerRpc()
+    public void shootServerRpc()
     {
-        shootServerRpc();
+
+      
+        ShootClientRpc();
+
     }
 
     [ClientRpc]
@@ -111,15 +113,21 @@ public class Weapon : NetworkBehaviour
 
         Projectile instance = Instantiate(projectile, shootPosition, projectileAngle).GetComponent<Projectile>();
 
-        if(currentCharge < minCharge)
+        // Projectile instance = projectile.GetComponent<Projectile>();
+
+        if (currentCharge < minCharge)
         {
             currentCharge = minCharge;
         }
 
         int damage = Mathf.RoundToInt(currentCharge);
+
+
         instance.damage = damage * 2;
         instance.projectileVelocity = projectileSpeed;
-        instance.GetSR().color = state.playerColor;
+       // instance.GetSR().color = state.playerColor;
+
+        instance.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId);
 
         state.TakeDamageClientRpc(damage);
     }
@@ -128,11 +136,11 @@ public class Weapon : NetworkBehaviour
     [ServerRpc]
     private void ResetShotServerRpc()
     {
-        ResetShotClientRpc();
+        ResetClientRpc();
     }
 
     [ClientRpc]
-    public void ResetShotClientRpc()
+    public void ResetClientRpc()
     {
         isCharging = false;
         currentCharge = 0;

@@ -151,7 +151,7 @@ public class PlayerState : NetworkBehaviour // NetWorkBehavior
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
 
-        GetComponent<Weapon>().ResetShotClientRpc();  // Kan behöva vara en ServerRpc Får se..
+        GetComponent<Weapon>().shootServerRpc();  
     }
 
     private Vector3 CalculateRespawnPoint()
