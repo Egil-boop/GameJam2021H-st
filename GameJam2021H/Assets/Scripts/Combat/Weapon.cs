@@ -97,13 +97,13 @@ public class Weapon : NetworkBehaviour
     public void shootServerRpc()
     {
 
-      
-        ShootClientRpc();
+
+        ShootClient();
 
     }
 
-    [ClientRpc]
-    private void ShootClientRpc()
+
+    private void ShootClient()
     {
         Vector3 lookDir = (Vector3)mousePos - transform.localPosition;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
@@ -112,8 +112,6 @@ public class Weapon : NetworkBehaviour
         shootPosition = transform.localPosition + Vector3.ClampMagnitude(new Vector3(lookDir.x, lookDir.y), projectileOffset);
 
         Projectile instance = Instantiate(projectile, shootPosition, projectileAngle).GetComponent<Projectile>();
-
-        // Projectile instance = projectile.GetComponent<Projectile>();
 
         if (currentCharge < minCharge)
         {
@@ -125,9 +123,10 @@ public class Weapon : NetworkBehaviour
 
         instance.damage = damage * 2;
         instance.projectileVelocity = projectileSpeed;
-       // instance.GetSR().color = state.playerColor;
+        //instance.GetSR().color = state.playerColor;
 
-        instance.GetComponent<NetworkObject>().SpawnWithOwnership(OwnerClientId);
+
+
 
         state.TakeDamageClientRpc(damage);
     }
