@@ -78,11 +78,11 @@ public class Weapon : MonoBehaviour
 
     private void Shoot()
     {
-        Vector2 lookDir = mousePos - (Vector2)transform.position;
+        Vector3 lookDir = (Vector3)mousePos - transform.localPosition;
         float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
         Quaternion projectileAngle = Quaternion.Euler(new Vector3(0f, 0f, angle - 90f));
-        Vector3 shootPosition = transform.position + (Vector3)lookDir;
-        shootPosition = transform.position + Vector3.ClampMagnitude(shootPosition, projectileOffset);
+        Vector3 shootPosition = transform.localPosition + lookDir;
+        shootPosition = transform.localPosition + Vector3.ClampMagnitude(new Vector3(lookDir.x, lookDir.y), projectileOffset);
 
         Projectile instance = Instantiate(projectile, shootPosition, projectileAngle).GetComponent<Projectile>();
 
@@ -94,6 +94,7 @@ public class Weapon : MonoBehaviour
         int damage = Mathf.RoundToInt(currentCharge);
         instance.damage = damage * 2;
         instance.projectileVelocity = projectileSpeed;
+        instance.GetSR().color = state.playerColor;
 
         state.TakeDamageClientRpc(damage);
     }

@@ -20,6 +20,10 @@ public class SpawnPlayerInfo : MonoBehaviour
 
         infoInstance.healthUI.color = color;
         infoInstance.playerName.color = color;
+        GetComponent<SpriteRenderer>().color = color;
+        LineRenderer lr = GetComponent<LineRenderer>();
+        lr.startColor = color;
+        lr.endColor = color;
 
         foreach (Image i in infoInstance.lives)
         {

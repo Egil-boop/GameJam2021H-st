@@ -48,4 +48,9 @@ public class Projectile : MonoBehaviour
         rb.velocity = Vector2.zero;
         Destroy(gameObject, 1f);
     }
+
+    public SpriteRenderer GetSR()
+    {
+        return sr;
+    }
 }
