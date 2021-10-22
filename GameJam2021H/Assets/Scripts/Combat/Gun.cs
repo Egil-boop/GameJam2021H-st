@@ -40,7 +40,7 @@ public class Gun : NetworkBehaviour
             WeaponPosServerRpc();
 
             //shoot
-            if (Input.GetButtonDown("Fire1"))
+            if (Input.GetButtonDown("Fire1") && !state.isDead)
             {
                 //shoot and tell server
                 ShootServerRpc();
@@ -73,7 +73,12 @@ public class Gun : NetworkBehaviour
             bullet.transform.position = hit.point;
             if(hit.collider.gameObject.TryGetComponent(out PlayerState enemy))
             {
-                enemy.TakeDamageServerRpc(100);
+                //enemy.TakeDamageServerRpc(100);
+                enemy.Hit();
+            }
+            else
+            {
+                state.DieServerRpc();
             }
         }
         else

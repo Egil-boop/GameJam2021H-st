@@ -11,12 +11,15 @@ public class SpawnPlayerInfo : MonoBehaviour
     public SetPlayerInfo infoInstance;
     public Color color;
 
+    private static int counter;
+
     private void Awake()
     {
         infoInstance = Instantiate(playerUI, GameObject.Find("PlayerTextUI").transform).GetComponent<SetPlayerInfo>();
 
         color = new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f));
         //infoInstance.playerName.text = PlayerPrefs.GetString("PlayerName");
+        infoInstance.playerName.text = "Player " + ++counter;
 
         infoInstance.healthUI.color = color;
         infoInstance.playerName.color = color;

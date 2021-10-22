@@ -18,6 +18,8 @@ public class DeathBox : MonoBehaviour
             if(player.currentLives.Value > 0)
             {
                 player.DieServerRpc();
+                AudioSource source = GetComponent<AudioSource>();
+                source.PlayOneShot(source.clip);
             }
         }
     }

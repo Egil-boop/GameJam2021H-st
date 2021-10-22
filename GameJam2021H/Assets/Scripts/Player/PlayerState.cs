@@ -28,24 +28,30 @@ public class PlayerState : NetworkBehaviour
     public float deathFreezeTimer = 2f;
 
 
-    public int startLives = 3;
+    public int startLives = 10;
 
     //---
     private float takeDamageTimer = 0.5f;
     private float timer;
 
     [Header("ReadOnly")]
+
     public NetworkVariableInt currentLives;
     private int _currentLives;
     public Color playerColor;
     public float dieTimer;
 
+    //---
+
+    private bool isHit;
+    public bool isDead;
+
     private void Start()
     {
         // Local player? NOtes: Egil
 
-        currentLives.CanClientWrite(GetComponent<NetworkObject>().OwnerClientId);
-        currentHealth.CanClientWrite(GetComponent<NetworkObject>().OwnerClientId);
+        currentLives.CanClientWrite(GetComponent<NetworkObject>().NetworkInstanceId);
+        currentHealth.CanClientWrite(GetComponent<NetworkObject>().NetworkInstanceId);
 
         spawnPlayerInfo = GetComponent<SpawnPlayerInfo>();
         playerInfo = spawnPlayerInfo.infoInstance;
@@ -78,8 +84,22 @@ public class PlayerState : NetworkBehaviour
 
                 TakeDamageServerRpc(100);
             }
+
+            if (isHit)
+            {
+                TakeDamageServerRpc(1000);
+                isHit = false;
+            }
         }
 
+    }
+
+    public void Hit()
+    {
+        if (!isDead)
+        {
+            isHit = true;
+        }
     }
 
     private void FixedUpdate()
@@ -87,7 +107,7 @@ public class PlayerState : NetworkBehaviour
         // Local player? NOtes: Egil
         if (IsLocalPlayer)
         {
-            if (dieTimer > 0f)
+            if (dieTimer > -1f)
             {
                 rb.velocity = Vector2.zero;
                 dieTimer -= Time.deltaTime;
@@ -95,7 +115,12 @@ public class PlayerState : NetworkBehaviour
             else
             {
                 //will break things if used elsewhere /August
-                pm.inputFreeze = false;
+                if (isDead)
+                {
+                    transform.position = CalculateRespawnPoint();
+                    isDead = false;
+                    pm.inputFreeze = false;
+                }
             }
 
             if(timer > 0)
@@ -116,7 +141,7 @@ public class PlayerState : NetworkBehaviour
     {
         if(timer <= 0f)
         {
-            if (dieTimer > 0f)
+            if (dieTimer > -1f)
             {
                 Debug.Log("Player is invulnerable!");
                 return;
@@ -145,8 +170,8 @@ public class PlayerState : NetworkBehaviour
     [ClientRpc]
     private void UpdateUIClientRpc()
     {
-        //int value = currentHealth.Value;
-        int value = _currentHealth;
+        int value = currentHealth.Value;
+        //int value = _currentHealth;
         healthUI.text = "$" + value;
 
     }
@@ -160,6 +185,7 @@ public class PlayerState : NetworkBehaviour
     private void DieClientRpc()
     {
         Debug.Log("Player died!");
+        isDead = true;
 
         _currentLives--;
         currentLives.Value = _currentLives;
@@ -167,6 +193,8 @@ public class PlayerState : NetworkBehaviour
         //UI lives
         Destroy(livesUI[currentLives.Value]);
         livesUI.RemoveAt(currentLives.Value);
+
+        GetComponent<ParticleSystem>().Play();
 
         if (currentLives.Value <= 0)
         {
@@ -181,11 +209,9 @@ public class PlayerState : NetworkBehaviour
             UpdateUiServerRpc();
         }
 
-        transform.position = CalculateRespawnPoint();
-
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
-
+        
         // GetComponent<Weapon>().ShootClientRpc();  
     }
 
