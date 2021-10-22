@@ -10,7 +10,7 @@ public class Gun : NetworkBehaviour
     public float projectileOffset = 2f;
 
     //-----
-    public GameObject projectile;
+   // public GameObject projectile;
 
     public float maxCharge = 50f;
     public float chargeRate = 10f;

@@ -15,8 +15,6 @@ GameObject:
   - component: {fileID: 2554065106020547663}
   - component: {fileID: 2554065106020547660}
   - component: {fileID: 6287401561448143924}
-  - component: {fileID: -1675387720698213742}
-  - component: {fileID: 2554065106020547662}
   - component: {fileID: 1014209829388342584}
   - component: {fileID: 5511385059660871224}
   - component: {fileID: 6693278697604011860}
@@ -187,39 +185,6 @@ MonoBehaviour:
   playerUI: {fileID: 5930921872880754247, guid: e93ad2bf9211a1345ad34769d5bf4cf5, type: 3}
   infoInstance: {fileID: 0}
   color: {r: 0, g: 0, b: 0, a: 0}
---- !u!114 &-1675387720698213742
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2554065106020547649}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92ea2e35a53ca9948bf0e79966282a83, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectile: {fileID: 4461626717584013892, guid: 2093386ba09514c4db478fab9893ad56, type: 3}
-  chargeSlider: {fileID: 2633117909426000671}
-  projectileSpeed: 10
-  projectileOffset: 2
-  maxCharge: 50
-  chargeRate: 10
-  minCharge: 1
-  currentCharge: 0
---- !u!114 &2554065106020547662
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2554065106020547649}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e787bd3419d671b44a1f38fa89b8e994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weapon: {fileID: 5131833853450531168, guid: b5bb15421da0d924692b3bffb3b73b9b, type: 3}
 --- !u!114 &1014209829388342584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,16 +601,5 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 9e11443031d68d74db92578e9bc52784, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2633117909426000671 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1474978793242085401, guid: 8696b11a78b1ad64f9bf9fbe0854b214, type: 3}
-  m_PrefabInstance: {fileID: 3527052622922226438}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

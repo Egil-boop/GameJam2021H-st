@@ -130,7 +130,7 @@ public class Weapon : NetworkBehaviour
 
         instance.damage = damage * 2;
         instance.projectileVelocity = projectileSpeed;
-        instance.GetSR().color = state.playerColor;
+       // instance.GetSR().color = state.playerColor;
 
 
 

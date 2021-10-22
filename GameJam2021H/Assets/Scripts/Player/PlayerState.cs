@@ -151,7 +151,7 @@ public class PlayerState : NetworkBehaviour
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
 
-        GetComponent<Weapon>().ShootClientRpc();  
+       // GetComponent<Weapon>().ShootClientRpc();  
     }
 
     private Vector3 CalculateRespawnPoint()
