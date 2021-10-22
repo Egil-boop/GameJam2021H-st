@@ -17,7 +17,7 @@ public class DeathBox : MonoBehaviour
         {
             if(player.currentLives > 0)
             {
-                player.Die();
+                player.DieServerRpc();
             }
         }
     }

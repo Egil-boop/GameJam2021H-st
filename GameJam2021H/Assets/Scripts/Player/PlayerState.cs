@@ -6,7 +6,7 @@ using MLAPI;
 using MLAPI.NetworkVariable;
 using MLAPI.Messaging;
 
-public class PlayerState : NetworkBehaviour 
+public class PlayerState : NetworkBehaviour
 {
     public DamagePopUp damagePopUp;
     private SetPlayerInfo playerInfo;
@@ -14,7 +14,7 @@ public class PlayerState : NetworkBehaviour
     private Text healthUI;
     private List<Image> livesUI;
 
-    
+
     public float respawnRange = 5f;
 
 
@@ -26,7 +26,7 @@ public class PlayerState : NetworkBehaviour
     private PlayerMovement pm;
 
     public float deathFreezeTimer = 2f;
-    
+
 
     public int startLives = 3;
 
@@ -47,7 +47,8 @@ public class PlayerState : NetworkBehaviour
         netWorkHealth.Value = startHealth;
         currentHealth = startHealth;
         currentLives = startLives;
-        UpdateUI();
+
+        UpdateUIClientRpc();
 
         rb = GetComponent<Rigidbody2D>();
         pm = GetComponent<PlayerMovement>();
@@ -109,21 +110,34 @@ public class PlayerState : NetworkBehaviour
         netWorkHealth.Value -= damage; // Network health så att man kan uppdatera variablen.
         currentHealth = netWorkHealth.Value; // get currentHealth samma värde så att det inte har sönder resten av koden for now.
         damagePopUp.Pop(damage); // getComponent Skapar NullPointer.
-        UpdateUI();
+        UpdateUiServerRpc();
 
         if (currentHealth <= 0)
         {
-            Die();
+            DieServerRpc();
         }
     }
 
-    private void UpdateUI()
+    [ServerRpc(RequireOwnership = false)]
+    public void UpdateUiServerRpc()
+    {
+        UpdateUIClientRpc();
+    }
+
+    [ClientRpc]
+    private void UpdateUIClientRpc()
     {
         healthUI.text = "$" + currentHealth;
 
     }
 
-    public void Die()
+    [ServerRpc(RequireOwnership = false)]
+    public void DieServerRpc()
+    {
+        DieClientRpc();
+    }
+    [ClientRpc]
+    private void DieClientRpc()
     {
         Debug.Log("Player died!");
 
@@ -142,8 +156,8 @@ public class PlayerState : NetworkBehaviour
         else
         {
             netWorkHealth.Value = startHealth;
-            currentHealth = startHealth;
-            UpdateUI();
+            currentHealth = netWorkHealth.Value;
+            UpdateUiServerRpc();
         }
 
         transform.position = CalculateRespawnPoint();
@@ -151,7 +165,7 @@ public class PlayerState : NetworkBehaviour
         dieTimer = deathFreezeTimer;
         pm.inputFreeze = true;
 
-       // GetComponent<Weapon>().ShootClientRpc();  
+        // GetComponent<Weapon>().ShootClientRpc();  
     }
 
     private Vector3 CalculateRespawnPoint()
