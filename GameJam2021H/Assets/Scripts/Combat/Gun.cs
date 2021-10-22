@@ -1,10 +1,121 @@
-using MLAPI;
 using UnityEngine;
 using UnityEngine.UI;
+using MLAPI;
 using MLAPI.Messaging;
 
-public class Weapon : NetworkBehaviour
+public class Gun : NetworkBehaviour
 {
+    public TrailRenderer bulletTrail;
+
+    public float projectileOffset = 2f;
+
+    //-----
+    // public GameObject projectile;
+    public Transform weapon;
+    private Vector2 mousePos;
+    private Vector3 lookDir;
+
+    public float maxCharge = 50f;
+    public float chargeRate = 10f;
+    public float minCharge = 1f;
+
+    public float projectileSpeed = 10f;
+
+    private PlayerState state;
+
+    [Header("Read Only")]
+    public float currentCharge;
+
+    private void Start()
+    {
+        state = GetComponent<PlayerState>();
+    }
+
+    private void Update()
+    {
+        if (IsLocalPlayer && state.dieTimer <= 0f)
+        {
+            MousePosServerRpc(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+            WeaponPosServerRpc();
+
+            //shoot
+            if (Input.GetButtonDown("Fire1"))
+            {
+                //shoot and tell server
+                ShootServerRpc();
+
+            }
+        }
+    }
+
+    //client -> server
+    [ServerRpc(RequireOwnership = false)]
+    void ShootServerRpc()
+    {
+        ShootClientRpc();
+    }
+
+    //server -> client
+    [ClientRpc]
+    void ShootClientRpc()
+    {
+
+        
+
+        var bullet = Instantiate(bulletTrail, weapon.position, transform.rotation);
+        bullet.AddPosition(weapon.position);
+
+        RaycastHit2D hit = Physics2D.Raycast(weapon.position, lookDir);
+
+        if(hit.collider != null)
+        {
+            bullet.transform.position = hit.point;
+            if(hit.collider.gameObject.TryGetComponent(out PlayerState enemy))
+            {
+                enemy.TakeDamageServerRpc(100);
+            }
+        }
+        else
+        {
+            bullet.transform.position = weapon.localPosition + (Vector3)mousePos * 200f;
+        }
+
+        AudioSource source = GetComponent<AudioSource>();
+        source.PlayOneShot(source.clip);
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void MousePosServerRpc(Vector2 mouse)
+    {
+        MousePosClientRpc(mouse);
+    }
+
+    [ClientRpc]
+    void MousePosClientRpc(Vector2 mouse)
+    {
+        mousePos = mouse;
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    void WeaponPosServerRpc()
+    {
+        WeaponPosClientRpc();
+    }
+
+    [ClientRpc]
+    void WeaponPosClientRpc()
+    {
+        lookDir = (Vector3)mousePos - transform.position;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
+        Quaternion projectileAngle = Quaternion.Euler(new Vector3(0f, 0f, angle - 90f));
+        Vector3 shootPosition = transform.position + lookDir;
+        shootPosition = transform.position + Vector3.ClampMagnitude(new Vector3(lookDir.x, lookDir.y), projectileOffset);
+
+        weapon.position = shootPosition;
+    }
+
+    /*
     public GameObject projectile;
     public Slider chargeSlider;
 
@@ -130,7 +241,7 @@ public class Weapon : NetworkBehaviour
 
         instance.damage = damage * 2;
         instance.projectileVelocity = projectileSpeed;
-       // instance.GetSR().color = state.playerColor;
+        instance.GetSR().color = state.playerColor;
 
 
 
@@ -165,5 +276,5 @@ public class Weapon : NetworkBehaviour
             lr.SetPosition(1, mousePos);
       
        
-    }
+    }*/
 }
