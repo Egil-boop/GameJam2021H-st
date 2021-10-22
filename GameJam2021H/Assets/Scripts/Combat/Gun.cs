@@ -33,7 +33,7 @@ public class Gun : NetworkBehaviour
 
     private void Update()
     {
-        if (IsLocalPlayer)
+        if (IsLocalPlayer && state.dieTimer <= 0f)
         {
             MousePosServerRpc(Camera.main.ScreenToWorldPoint(Input.mousePosition));
 
@@ -50,7 +50,7 @@ public class Gun : NetworkBehaviour
     }
 
     //client -> server
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     void ShootServerRpc()
     {
         ShootClientRpc();
@@ -73,7 +73,7 @@ public class Gun : NetworkBehaviour
             bullet.transform.position = hit.point;
             if(hit.collider.gameObject.TryGetComponent(out PlayerState enemy))
             {
-                enemy.TakeDamageServerRpc(10);
+                enemy.TakeDamageServerRpc(100);
             }
         }
         else
@@ -81,36 +81,11 @@ public class Gun : NetworkBehaviour
             bullet.transform.position = weapon.localPosition + (Vector3)mousePos * 200f;
         }
 
-        /*
-        Vector3 lookDir = (Vector3)mousePos - transform.localPosition;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
-        Quaternion projectileAngle = Quaternion.Euler(new Vector3(0f, 0f, angle - 90f));
-        Vector3 shootPosition = transform.localPosition + lookDir;
-        shootPosition = transform.localPosition + Vector3.ClampMagnitude(new Vector3(lookDir.x, lookDir.y), projectileOffset);
-
-
-        Projectile instance = Instantiate(projectile, shootPosition, projectileAngle).GetComponent<Projectile>();
-
-
-        if (currentCharge < minCharge)
-        {
-            currentCharge = minCharge;
-        }
-
-        int damage = Mathf.RoundToInt(currentCharge);
-
-
-        instance.damage = damage * 2;
-        instance.projectileVelocity = projectileSpeed;
-        instance.GetSR().color = state.playerColor;
-
-
-
-
-        state.TakeDamageServerRpc(damage);*/
+        AudioSource source = GetComponent<AudioSource>();
+        source.PlayOneShot(source.clip);
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     void MousePosServerRpc(Vector2 mouse)
     {
         MousePosClientRpc(mouse);
@@ -122,7 +97,7 @@ public class Gun : NetworkBehaviour
         mousePos = mouse;
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     void WeaponPosServerRpc()
     {
         WeaponPosClientRpc();
