@@ -170,7 +170,8 @@ MonoBehaviour:
   startHealth: 1000
   deathFreezeTimer: 2
   startLives: 3
-  currentLives: 0
+  currentLives:
+    m_InternalValue: 0
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   dieTimer: 0
 --- !u!114 &6287401561448143924
@@ -221,6 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   eliminatedText: {fileID: 9146238060179418765}
+  pointLight: {fileID: 7073991237361586725}
   eliminatedTimer: 1
 --- !u!114 &5511385059660871224
 MonoBehaviour:

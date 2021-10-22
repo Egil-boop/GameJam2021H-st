@@ -18,9 +18,8 @@ public class PlayerState : NetworkBehaviour
     public float respawnRange = 5f;
 
 
-    NetworkVariableInt netWorkHealth = new NetworkVariableInt(1000);
     public int startHealth = 1000;
-    private int currentHealth;
+    NetworkVariableInt currentHealth;
 
     private Rigidbody2D rb;
     private PlayerMovement pm;
@@ -30,8 +29,12 @@ public class PlayerState : NetworkBehaviour
 
     public int startLives = 3;
 
+    //---
+    private float takeDamageTimer = 0.5f;
+    private float timer;
+
     [Header("ReadOnly")]
-    public int currentLives;
+    public NetworkVariableInt currentLives;
     public Color playerColor;
     public float dieTimer;
 
@@ -39,14 +42,16 @@ public class PlayerState : NetworkBehaviour
     {
         // Local player? NOtes: Egil
 
+        currentLives.CanClientWrite(GetComponent<NetworkObject>().NetworkObjectId);
+        currentHealth.CanClientWrite(GetComponent<NetworkObject>().NetworkObjectId);
+
         spawnPlayerInfo = GetComponent<SpawnPlayerInfo>();
         playerInfo = spawnPlayerInfo.infoInstance;
         playerColor = spawnPlayerInfo.color;
         healthUI = playerInfo.healthUI;
         livesUI = playerInfo.lives;
-        netWorkHealth.Value = startHealth;
-        currentHealth = startHealth;
-        currentLives = startLives;
+        currentHealth.Value = startHealth;
+        currentLives.Value = startLives;
 
         UpdateUIClientRpc();
 
@@ -87,8 +92,12 @@ public class PlayerState : NetworkBehaviour
                 //will break things if used elsewhere /August
                 pm.inputFreeze = false;
             }
-        }
 
+            if(timer > 0)
+            {
+                timer -= Time.deltaTime;
+            }
+        }
     }
 
     [ServerRpc(RequireOwnership = false)]
@@ -100,21 +109,24 @@ public class PlayerState : NetworkBehaviour
     [ClientRpc]
     public void TakeDamageClientRpc(int damage)
     {
-        if (dieTimer > 0)
+        if(timer <= 0f)
         {
-            Debug.Log("Player is invulnerable!");
-            return;
-        }
+            if (dieTimer > 0f)
+            {
+                Debug.Log("Player is invulnerable!");
+                return;
+            }
 
 
-        netWorkHealth.Value -= damage; // Network health så att man kan uppdatera variablen.
-        currentHealth = netWorkHealth.Value; // get currentHealth samma värde så att det inte har sönder resten av koden for now.
-        damagePopUp.Pop(damage); // getComponent Skapar NullPointer.
-        UpdateUiServerRpc();
+            currentHealth.Value -= damage; // Network health så att man kan uppdatera variablen.
+            timer = takeDamageTimer;
+            damagePopUp.Pop(damage); // getComponent Skapar NullPointer.
+            UpdateUiServerRpc();
 
-        if (currentHealth <= 0)
-        {
-            DieServerRpc();
+            if (currentHealth.Value <= 0)
+            {
+                DieServerRpc();
+            }
         }
     }
 
@@ -127,7 +139,7 @@ public class PlayerState : NetworkBehaviour
     [ClientRpc]
     private void UpdateUIClientRpc()
     {
-        healthUI.text = "$" + currentHealth;
+        healthUI.text = "$" + currentHealth.Value;
 
     }
 
@@ -141,22 +153,21 @@ public class PlayerState : NetworkBehaviour
     {
         Debug.Log("Player died!");
 
-        currentLives--;
+        currentLives.Value -= 1;
 
         //UI lives
-        Destroy(livesUI[currentLives]);
-        livesUI.RemoveAt(currentLives);
+        Destroy(livesUI[currentLives.Value]);
+        livesUI.RemoveAt(currentLives.Value);
 
-        if (currentLives <= 0)
+        if (currentLives.Value <= 0)
         {
             //game over
-            Debug.LogWarning("TODO: implement GAME OVER!");
+            GetComponent<GameOver>().Eliminated();
             return;
         }
         else
         {
-            netWorkHealth.Value = startHealth;
-            currentHealth = netWorkHealth.Value;
+            currentHealth.Value = startHealth;
             UpdateUiServerRpc();
         }
 

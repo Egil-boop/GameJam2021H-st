@@ -2,10 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Experimental.Rendering.Universal;
 
 public class GameOver : MonoBehaviour
 {
     public Text eliminatedText;
+    public Light2D pointLight;
     private PlayerState state;
     public float eliminatedTimer = 1f;
     private float timer;
@@ -32,12 +34,15 @@ public class GameOver : MonoBehaviour
 
     public void Eliminated()
     {
-        if(state.currentLives <= 0)
+        if(state.currentLives.Value <= 0)
         {
             eliminatedText.color = state.playerColor;
             timer = eliminatedTimer;
 
+            GetComponent<Gun>().weapon.gameObject.GetComponent<SpriteRenderer>().enabled = false;
             GetComponent<SpriteRenderer>().enabled = false;
+            GetComponent<Collider2D>().enabled = false;
+            pointLight.enabled = false;
         }
     }
 }

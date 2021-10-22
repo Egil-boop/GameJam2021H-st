@@ -15,7 +15,7 @@ public class DeathBox : MonoBehaviour
     {
         if(collision.gameObject.TryGetComponent(out PlayerState player))
         {
-            if(player.currentLives > 0)
+            if(player.currentLives.Value > 0)
             {
                 player.DieServerRpc();
             }
