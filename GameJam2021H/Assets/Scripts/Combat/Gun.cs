@@ -10,7 +10,10 @@ public class Gun : NetworkBehaviour
     public float projectileOffset = 2f;
 
     //-----
-   // public GameObject projectile;
+    // public GameObject projectile;
+    public Transform weapon;
+    private Vector2 mousePos;
+    private Vector3 lookDir;
 
     public float maxCharge = 50f;
     public float chargeRate = 10f;
@@ -32,11 +35,15 @@ public class Gun : NetworkBehaviour
     {
         if (IsLocalPlayer)
         {
+            MousePosServerRpc(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+            WeaponPosServerRpc();
+
             //shoot
             if (Input.GetButtonDown("Fire1"))
             {
                 //shoot and tell server
-                ShootServerRpc(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                ShootServerRpc();
 
             }
         }
@@ -44,29 +51,22 @@ public class Gun : NetworkBehaviour
 
     //client -> server
     [ServerRpc]
-    void ShootServerRpc(Vector2 mousePos)
+    void ShootServerRpc()
     {
-        ShootClientRpc(mousePos);
+        ShootClientRpc();
     }
 
     //server -> client
     [ClientRpc]
-    void ShootClientRpc(Vector2 mousePos)
+    void ShootClientRpc()
     {
+
         
-        Vector3 lookDir = (Vector3)mousePos - transform.localPosition;
-        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
-        Quaternion projectileAngle = Quaternion.Euler(new Vector3(0f, 0f, angle - 90f));
-        //Vector3 shootPosition = transform.localPosition + lookDir;
-        //shootPosition = transform.localPosition + Vector3.ClampMagnitude(new Vector3(lookDir.x, lookDir.y), projectileOffset);
 
-        //Vector3 shootPosition = transform.position;
-        Vector3 shootPosition = transform.position + Vector3.ClampMagnitude(mousePos, projectileOffset);
+        var bullet = Instantiate(bulletTrail, weapon.position, transform.rotation);
+        bullet.AddPosition(weapon.position);
 
-        var bullet = Instantiate(bulletTrail, shootPosition, transform.rotation);
-        bullet.AddPosition(shootPosition);
-
-        RaycastHit2D hit = Physics2D.Raycast(shootPosition, lookDir);
+        RaycastHit2D hit = Physics2D.Raycast(weapon.position, lookDir);
 
         if(hit.collider != null)
         {
@@ -78,7 +78,7 @@ public class Gun : NetworkBehaviour
         }
         else
         {
-            bullet.transform.position = shootPosition + (Vector3)mousePos * 200f;
+            bullet.transform.position = weapon.localPosition + (Vector3)mousePos * 200f;
         }
 
         /*
@@ -108,6 +108,36 @@ public class Gun : NetworkBehaviour
 
 
         state.TakeDamageServerRpc(damage);*/
+    }
+
+    [ServerRpc]
+    void MousePosServerRpc(Vector2 mouse)
+    {
+        MousePosClientRpc(mouse);
+    }
+
+    [ClientRpc]
+    void MousePosClientRpc(Vector2 mouse)
+    {
+        mousePos = mouse;
+    }
+
+    [ServerRpc]
+    void WeaponPosServerRpc()
+    {
+        WeaponPosClientRpc();
+    }
+
+    [ClientRpc]
+    void WeaponPosClientRpc()
+    {
+        lookDir = (Vector3)mousePos - transform.position;
+        float angle = Mathf.Atan2(lookDir.y, lookDir.x) * Mathf.Rad2Deg;
+        Quaternion projectileAngle = Quaternion.Euler(new Vector3(0f, 0f, angle - 90f));
+        Vector3 shootPosition = transform.position + lookDir;
+        shootPosition = transform.position + Vector3.ClampMagnitude(new Vector3(lookDir.x, lookDir.y), projectileOffset);
+
+        weapon.position = shootPosition;
     }
 
     /*

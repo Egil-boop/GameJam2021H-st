@@ -90,7 +90,7 @@ public class PlayerState : NetworkBehaviour
 
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void TakeDamageServerRpc(int damage)
     {
         TakeDamageClientRpc(damage);
